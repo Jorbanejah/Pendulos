@@ -14,12 +14,12 @@ clc
 
 g = 9.8;
 L = 2;
-x0 = 0;
+x01 = 0; %CC
 
 syms x(t) %Haremos la ecuación con variables simbólicas
 derivada_segunda = diff(x, t, 2);
 
-eqn = derivada_segunda + g/L*sin(x - x0) == 0;
+eqn = derivada_segunda + g/L*sin(x - x01) == 0;
 
 %La resolución de esta ecuacion la podemos hacer con métodos numéricos o
 %con las funciones de Matlab. Haremos un análisis. 
@@ -27,40 +27,121 @@ eqn = derivada_segunda + g/L*sin(x - x0) == 0;
 
 % Dsolve: no puede resolver sistemas no lineales por eso linealizamos el
 % sistema con ángulo pequeños: 
-eqn1 = derivada_segunda + g/L*(x - x0) == 0;
+eqn1 = derivada_segunda + g/L*(x - x01) == 0;
 solucion_dsolve = dsolve(eqn1);
 disp(solucion_dsolve)
 
 % ode45 no usa variables simbólicas, asi que, reescribiremos la ecuación
 %como un sistema de ecuaciones
-pendulo = @(t, x) [x(2);  -(g/L) * sin(x(1) - x0)];
-t_init = [0 10]; % timepo 
+pendulo = @(t, x) [x(2); -(g/L) * sin(x(1) - x01)];
+t_init = [0 10]; % tiempo 
 x_init = [pi/4; 0]; %Ángulo inicial; velocidad angular inicial
 [t, x]= ode45(pendulo, t_init, x_init);
 
 % Con los métodos numéricos:
 
-%Método de Euler implícito:
-%Método de Heun:
+h = 0.01; %Paso
+N = 1000; %Número de iteraciones
+v0 = 0; %Condiciones iniciales
+omega = g/L;
+
+%Comparacion de los cuatro métodos con la solución del sistema original.
+
+[t1, x1, v1] = euler_implicito_osc(0, x0, v0, h, N, omega);
+[t2, x2, v2] = heun_osc(0, x0, v0, h, N, omega);
+[t3, x3, v3] = RG4(0, x0, v0, h, N, omega);
+
+plot(t1, x_ode_interp, 'r', t1, x1, 'b--', t2, x2, 'g-.', t3, x3, 'k:');
+legend('ODE45', 'Euler Implícito', 'Heun', 'Runge-Kutta 4');
+xlabel('Tiempo'); ylabel('Desplazamiento');
+title('Comparación de Métodos Numéricos');
+
+% Podemos agregar tambien, un gráfica para el error relativo de los métodos
+% error_heun = abs(x(:,1) - x2);
+% error_rk4 = abs(x(:,1) - x3);
+% plot(t, error_heun, 'g', t, error_rk4, 'k');
+% legend('Error Heun', 'Error RK4');
+% title('Error relativo respecto a ODE45');
+
+%A continuación se escriben las funciones: (recordar que en Matlab las funciones son las que cierras los scripts)
+
+%Método de Euler implícito: requiere resolver un sistema de ecuaciones en
+%cada paso en nuestro caso, la ecuación cambiará: dx/dt = v; dv/dt = -
+%g/L*(x-x0)
+
+function [t, x, v] = euler_implicito_osc(t0, x0, v0, h, N, omega)
+    x = zeros(1, N+1);
+    v = zeros(1, N+1);
+    t = t0:h:(t0 + N*h);
+    x(1) = x0;
+    v(1) = v0;
+
+    A = [1, -h; h*omega^2, 1]; % Matriz del sistema implícito
+    for n = 1:N
+        y_next = A \ [x(n); v(n)];
+        x(n+1) = y_next(1);
+        v(n+1) = y_next(2);
+    end
+end
+
+%Método de Heun: que es el método de Euler mejorado (con una corrección)
+
+function [t, x, v] = heun_osc(t0, x0, v0, h, N, omega)
+    x = zeros(1, N+1);
+    v = zeros(1, N+1);
+    t = t0:h:(t0 + N*h);
+    x(1) = x0;
+    v(1) = v0;
+
+    for n = 1:N
+        % Hacemos una estimación lineal del resultado a través del Euler
+        % Explícito. Llamado: predictor
+        x_pred = x(n) + h * v(n);
+        v_pred = v(n) - h * omega^2 * x(n);
+
+        % Ahora corregimos la información de "dirección" que nos da el
+        % predictor. Llamado: corrector
+        x(n+1) = x(n) + (h/2) * (v(n) + v_pred);
+        v(n+1) = v(n) - (h/2) * omega^2 * (x(n) + x_pred);
+    end
+end
+
 %Método de RK4 (es en el que está basado ode45):
 
+function [t, x, v] = RG4(t0, x0, v0, h, N, omega)
+    x = zeros(1, N+1);
+    v = zeros(1, N+1);
+    t = t0:h:(t0 + N*h);
+    x(1) = x0;
+    v(1) = v0;
 
-% Para poder ilustrar que la solución es correcta, haremos una pequeña animación con la solución,
-% El objeto por antonomasia escogido por los fisicos es: El péndulo.
-% (Aunque un muelle también sirve, es un OAL, por ahora).
-% Nota: la solución que nos ha dado el sistema es la solución completa sin
-% la corrección física que hacemos nosotros de manera manual. La solución
-% que usaremos será:
-funcion = @(t) x0 * cos(omega*t + delta);
-% Descripción del sistema:
-% Describimos las varibles y su recorrido:
-omega = 1/100; 
-t = linspace(0,10, 100); %Tiempo del péndulo en movimiento
-delta = 0;
-x0 = 2; %Longitud del péndulo
+    for n = 1:N
+        % k1
+        k1x = v(n);
+        k1v = -omega^2 * x(n);
 
+        % k2
+        k2x = v(n) + 0.5*h*k1v;
+        k2v = -omega^2 * (x(n) + 0.5*h*k1x);
 
+        % k3
+        k3x = v(n) + 0.5*h*k2v;
+        k3v = -omega^2 * (x(n) + 0.5*h*k2x);
 
+        % k4
+        k4x = v(n) + h*k3v;
+        k4v = -omega^2 * (x(n) + h*k3x);
 
+        % Actualización
+        x(n+1) = x(n) + (h/6)*(k1x + 2*k2x + 2*k3x + k4x);
+        v(n+1) = v(n) + (h/6)*(k1v + 2*k2v + 2*k3v + k4v);
+    end
+end
 
-
+%Como observamos en el gráfico: los métodos de RG4 y Heun van a la par en
+%la solución oscilatoria, por otro lado, el método de Euler al inicio va
+%con ellos, sin embargo, el método amortigua la solución. Este último,
+%tiende a amortiguar o suavizar las oscialaciones con cada iteración (El  
+% método introduce una pérdida de energía que no existe).
+%Lo mismo le sucede a Ode45, no sirve para sistemas convervativos. Acumula
+%el error de cada iteracion y al final se desvia del resultado.
