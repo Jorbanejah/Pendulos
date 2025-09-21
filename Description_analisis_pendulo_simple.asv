@@ -79,8 +79,9 @@ function [t, x, v] = euler_implicito_osc(t0, x0, v0, h, N, omega)
     v(1) = v0;
 
    for n = 1:N
-        % Definimos el sistema no lineal:
-        F = @(y) [y(1) - x(n) - h*y(2); y(2) - v(n) + h*(omega^2)*sin(y(1))];
+        % Definimos el sistema no lineal a resolver:
+        F = @(y) [y(1) - y(n) - h*y(2); 
+                  y(2) - v(n) + h*(omega^2)*sin(y(1))];
         % Usamos como estimación inicial el valor anterior:
         y0 = [x(n); v(n)];
         % Resolvemos el sistema no lineal:
@@ -143,16 +144,3 @@ function [t, x, v] = RG4(t0, x0, v0, h, N, omega)
         v(n+1) = v(n) + (h/6)*(k1v + 2*k2v + 2*k3v + k4v);
     end
 end
-% 
-% El método implícito de Euler es numéricamente disipativo
-% Esto significa que reduce la energía del sistema con cada paso, aunque el modelo físico no tenga ninguna fuerza de fricción.
-% 
-% En sistemas oscilatorios como el péndulo, esto se traduce en que la amplitud de las oscilaciones disminuye artificialmente con el tiempo.
-% 
-% Es una propiedad intrínseca del método, no del sistema que estás modelando.
-% 
-% El método implícito de Euler prioriza la estabilidad sobre la precisión.
-% 
-% En cada paso, resuelve una ecuación que "mira hacia adelante", lo que tiende a suavizar las oscilaciones.
-% 
-% Esto es útil en sistemas rígidos o con alta frecuencia, pero en sistemas conservativos (como el péndulo sin fricción), no representa la física real.
