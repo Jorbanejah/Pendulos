@@ -1,23 +1,14 @@
 
+
+
+
 l = 1; M = 2; m = 1; g = 9.81; k = 0.5;
 
 t_init = [0 10];
 conditional = [0; 0; pi/4; 0]; %Inicial position, inicial velocity, angular pocition, angular velocity.
 [t, x] = ode45(@(x,t)combinacion_pendulos, t_init, contional);
 
-nFrames = length(t);
-for i = 1:n 
-    clf;
-
-    
-    hold on 
-
-    hold off
-end
-
-
-
-function [t, x] = combinacion_pendulos(t, y, g, L, m, M, k)
+function dxdt = combinacion_pendulos(t, y, g, L, m, M, k)
 
     x = y(1);
     dxdt = y(2);
