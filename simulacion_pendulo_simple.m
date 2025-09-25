@@ -6,7 +6,7 @@
 %Since x represents the angle formed with the horizontal line, we will
 %refer to it as theta.
 g = 9.81;
-
+L=1;
 t_init = [0 5]; %Time
 initcondition = [pi/4; 0]; %Initial angle and angular velocity
 initcondition1 = [pi/4; sqrt((2*g)/L)];
@@ -19,7 +19,7 @@ nFrames = length(t);
 theta1_intercept = interp1(t1, theta1(:,1), linspace(0, 5, nFrames));
 theta2_intercept = interp1(t2, theta2(:,1), linspace(0, 5, nFrames));
 
-L = 1;
+
 for i = 1:length(t)
     clf; %Wipe the current figure clean before drawing the next frame
     grid on
