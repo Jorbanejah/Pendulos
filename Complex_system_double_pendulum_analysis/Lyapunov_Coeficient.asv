@@ -1,0 +1,77 @@
+%% Introduction: double pendulum
+%Physics parametres
+L1 = 1; L2 = 0.5; m1 = 0.75; m2 = 0.5; g = 9.81;
+
+%Condition
+t_init = [0 10];
+
+%% Coeficient Lyapunov
+
+angle = linspace(1,60, 30);
+result = [];
+for i=1:length(angle)
+
+    initial_condition = [angle* pi / 90; 0; 0; 0];
+    initial_condition_aprox = [angle * pi / 90; 0; 0; 0];
+    [t, z] = ode45(@(t, theta)equations(t, theta, L1, L2, g, m1, m2), t_init, initial_condition);
+    [t_aprox, z_aprox] = ode45(@(t, theta)equations_aprox(t, theta, L1, L2, g, m1, m2), t_init, initial_condition_aprox);
+
+    [t_compare, distance] = compare();
+end
+
+%% Comparetion
+function [t, distance] = compare()
+
+end
+%% Equation
+function dy = equations(t, theta, L1, L2, g, m1, m2)
+    
+    theta1 = theta(1);
+    dtheta1 = theta(2);
+    theta2 = theta(3);
+    dtheta2 = theta(4);
+
+    A = [(m1 + m2) * L1^2, m2 * L1 * L2 * cos(theta1 - theta2);
+        m2 * L1 * L2 * cos(theta1 - theta2), m2 * L2^2];
+
+    B = [-m2 * L1 * L2 * sin(theta1 - theta2) * dtheta2^2 - (m1 + m2) * g * L1 * sin(theta1);
+     m2 * L1 * L2 * sin(theta1 - theta2) * dtheta1^2 + m2 * g * L2 * sin(theta2)];
+
+    sol = A \ B;
+
+    dtheta1_sol = sol(1);
+    dtheta2_sol = sol(2);
+    
+    
+    dy = zeros(4,1);
+    dy(1) = dtheta1;
+    dy(2) = dtheta1_sol;
+    dy(3) = dtheta2;
+    dy(4) = dtheta2_sol;
+
+end
+%% Equation_aprox
+function dy_aprox = equations_aprox(t, theta, L1, L2, g, m1, m2)
+    
+    theta1 = theta(1);
+    dtheta1 = theta(2);
+    theta2 = theta(3);
+    dtheta2 = theta(4);
+
+    A = [(m1 + m2) * L1, m2 * L2;
+         m2 * L1,        m2 * L2];
+
+    B = [- (m1 + m2) * g * theta1;
+         - m2 * g * theta2];
+
+    sol = A \ B;
+
+    dtheta1_aprox = sol(1);
+    dtheta2_aprox = sol(2);
+
+    dy_aprox = zeros(4,1);
+    dy_aprox(1) = dtheta1;
+    dy_aprox(2) = dtheta1_aprox;
+    dy_aprox(3) = dtheta2;
+    dy_aprox(4) = dtheta2_aprox;
+end

@@ -12,7 +12,6 @@ initial_condition_aprox = [45 * pi / 90; 0; 0; 0];
 %%
 %Animation: with a little tricky
 
-
 if (length(t) >= length(t_aprox))
     nFrames = length(t_aprox);
 else
