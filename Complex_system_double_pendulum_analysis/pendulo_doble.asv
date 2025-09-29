@@ -45,51 +45,51 @@ for i = 1:length(t_aprox)
     E_total_aprox(i) = Ek_aprox(i) + Ep_aprox(i);
 end
 
-% figure(1);
-% for i = 1:nFrames
-%     clf;
-%     x = L1 * sin(z(i,1));
-%     y = - L1 * cos(z(i,1));
-%     x1 = x + L2 * sin(z(i,3));
-%     y1 = y - L2 * cos(z(i,3));
-% 
-%     x_aprox = L1 * sin(z_aprox(i,1));
-%     y_aprox = - L1 * cos(z_aprox(i,1));
-%     x1_aprox = x_aprox + L2 * sin(z_aprox(i,3));
-%     y1_aprox = y_aprox - L2 * cos(z_aprox(i,3));
-% 
-%     hold on
-% 
-%     % Plot exact pendulum
-%     plot([0 x], [0 y], 'k-', 'LineWidth', 2);
-%     plot([x x1], [y y1], 'k-', 'LineWidth', 2);
-%     plot(x, y, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
-%     plot(x1, y1, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
-% 
-%     % Plot approximated pendulum (shifted right)
-%     plot([4 4+x_aprox], [0 y_aprox], 'k-', 'LineWidth', 2);
-%     plot([x_aprox+4 x1_aprox+4], [y_aprox y1_aprox], 'k-', 'LineWidth', 2);
-%     plot(x_aprox+4, y_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
-%     plot(x1_aprox+4, y1_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
-% 
-%     % Ground line
-%     plot([-1 7], [0 0], 'k', 'LineWidth', 2);
-% 
-%     axis equal; axis([-2, 7, -3, 1]);
-%     drawnow;
-% end
+figure(1);
+for i = 1:nFrames
+    clf;
+    x = L1 * sin(z(i,1));
+    y = - L1 * cos(z(i,1));
+    x1 = x + L2 * sin(z(i,3));
+    y1 = y - L2 * cos(z(i,3));
+
+    x_aprox = L1 * sin(z_aprox(i,1));
+    y_aprox = - L1 * cos(z_aprox(i,1));
+    x1_aprox = x_aprox + L2 * sin(z_aprox(i,3));
+    y1_aprox = y_aprox - L2 * cos(z_aprox(i,3));
+
+    hold on
+
+    % Plot exact pendulum
+    plot([0 x], [0 y], 'k-', 'LineWidth', 2);
+    plot([x x1], [y y1], 'k-', 'LineWidth', 2);
+    plot(x, y, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
+    plot(x1, y1, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
+
+    % Plot approximated pendulum (shifted right)
+    plot([4 4+x_aprox], [0 y_aprox], 'k-', 'LineWidth', 2);
+    plot([x_aprox+4 x1_aprox+4], [y_aprox y1_aprox], 'k-', 'LineWidth', 2);
+    plot(x_aprox+4, y_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
+    plot(x1_aprox+4, y1_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
+
+    % Ground line
+    plot([-1 7], [0 0], 'k', 'LineWidth', 2);
+
+    axis equal; axis([-2, 7, -3, 1]);
+    drawnow;
+end
 %% Total Energy graphs
 figure(2);
 plot(t, Ek, t_aprox, Ek_aprox, 'LineWidth', 2);
 xlabel('Time (s)');
 ylabel('Total kinetic energy');
-title('Kinetic Energy');
+tittle('');
 
 figure(3);
 plot(t, Ep, t_aprox, Ep_aprox, 'LineWidth', 2);
 xlabel('Time (s)');
 ylabel('Total potencial energy');
-title('Potencial Energy');
+tittle('');
 
 figure(4);
 plot(t(1:length(t)), E_total, 'LineWidth', 2);
