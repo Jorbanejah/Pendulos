@@ -5,15 +5,12 @@ L1 = 1; L2 = 0.5; m1 = 0.75; m2 = 0.5; g = 9.81;
 
 %Condition
 t_init = [0 10];
-initial_condition = [45 * pi / 90; 0; 0; 0];
-initial_condition_aprox = [45 * pi / 90; 0; 0; 0];
+initial_condition = [45 * pi / 180; 0; 0; 0];
+initial_condition_aprox = [45 * pi / 180; 0; 0; 0];
 
 opts = odeset('RelTol',1e-10,'AbsTol',1e-12);
-[t, z] = ode15s(@(t, theta)equations(t, theta, L1, L2, g, m1, m2), t_init, initial_condition, odeset);
-[t_aprox, z_aprox] = ode15s(@(t, theta)equations_aprox(t, theta, L1, L2, g, m1, m2), t_init, initial_condition_aprox, odeset);
-
-
-
+[t, z] = ode45(@(t, theta)equations(t, theta, L1, L2, g, m1, m2), t_init, initial_condition, odeset);
+[t_aprox, z_aprox] = ode45(@(t, theta)equations_aprox(t, theta, L1, L2, g, m1, m2), t_init, initial_condition_aprox, odeset);
 
 %% Animation: with a little tricky
 
@@ -45,65 +42,83 @@ for i = 1:length(t_aprox)
     E_total_aprox(i) = Ek_aprox(i) + Ep_aprox(i);
 end
 
-% figure(1);
-% for i = 1:nFrames
-%     clf;
-%     x = L1 * sin(z(i,1));
-%     y = - L1 * cos(z(i,1));
-%     x1 = x + L2 * sin(z(i,3));
-%     y1 = y - L2 * cos(z(i,3));
-% 
-%     x_aprox = L1 * sin(z_aprox(i,1));
-%     y_aprox = - L1 * cos(z_aprox(i,1));
-%     x1_aprox = x_aprox + L2 * sin(z_aprox(i,3));
-%     y1_aprox = y_aprox - L2 * cos(z_aprox(i,3));
-% 
-%     hold on
-% 
-%     % Plot exact pendulum
-%     plot([0 x], [0 y], 'k-', 'LineWidth', 2);
-%     plot([x x1], [y y1], 'k-', 'LineWidth', 2);
-%     plot(x, y, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
-%     plot(x1, y1, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
-% 
-%     % Plot approximated pendulum (shifted right)
-%     plot([4 4+x_aprox], [0 y_aprox], 'k-', 'LineWidth', 2);
-%     plot([x_aprox+4 x1_aprox+4], [y_aprox y1_aprox], 'k-', 'LineWidth', 2);
-%     plot(x_aprox+4, y_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
-%     plot(x1_aprox+4, y1_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
-% 
-%     % Ground line
-%     plot([-1 7], [0 0], 'k', 'LineWidth', 2);
-% 
-%     axis equal; axis([-2, 7, -3, 1]);
-%     drawnow;
-% end
+%Animation
+figure(1);
+for i = 1:nFrames
+    clf;
+    x = L1 * sin(z(i,1));
+    y = - L1 * cos(z(i,1));
+    x1 = x + L2 * sin(z(i,3));
+    y1 = y - L2 * cos(z(i,3));
+
+    x_aprox = L1 * sin(z_aprox(i,1));
+    y_aprox = - L1 * cos(z_aprox(i,1));
+    x1_aprox = x_aprox + L2 * sin(z_aprox(i,3));
+    y1_aprox = y_aprox - L2 * cos(z_aprox(i,3));
+
+    hold on
+
+    % Plot exact pendulum
+    plot([0 x], [0 y], 'k-', 'LineWidth', 2);
+    plot([x x1], [y y1], 'k-', 'LineWidth', 2);
+    plot(x, y, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
+    plot(x1, y1, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
+
+    % Plot approximated pendulum (shifted right)
+    plot([4 4+x_aprox], [0 y_aprox], 'k-', 'LineWidth', 2);
+    plot([x_aprox+4 x1_aprox+4], [y_aprox y1_aprox], 'k-', 'LineWidth', 2);
+    plot(x_aprox+4, y_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
+    plot(x1_aprox+4, y1_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
+
+    % Ground line
+    plot([-2 7], [0 0], 'k', 'LineWidth', 2);
+
+    axis equal; axis([-2, 7, -3, 1]);
+    drawnow;
+end
 %% Total Energy graphs
+
 figure(2);
-plot(t, Ek, t_aprox, Ek_aprox, 'LineWidth', 2);
+
+subplot(3,1,1);
+plot(t_aprox, Ek_aprox, 'LineWidth', 2);
+xlabel('Time (s)');
+ylabel('Kinetic energy (J)');
+title('Kinetic Energy');
+
+subplot(3,1,2);
+plot(t_aprox, Ep_aprox, 'LineWidth', 2);
+xlabel('Time (s)');
+ylabel('Potential energy (J)');
+title('Potential Energy');
+
+subplot(3,1,3);
+plot(t_aprox, E_total_aprox, 'LineWidth', 2);
+xlabel('Time (s)');
+ylabel('Total energy (J)');
+title('Energy Conservation (Approximation)');
+grid on;
+
+figure(3);
+
+subplot(3,1,1)
+plot(t, Ek, 'LineWidth', 2)
 xlabel('Time (s)');
 ylabel('Total kinetic energy');
 title('Kinetic Energy');
 
-figure(3);
-plot(t, Ep, t_aprox, Ep_aprox, 'LineWidth', 2);
+subplot(3,1,2)
+plot(t, Ep, 'LineWidth', 2)
 xlabel('Time (s)');
-ylabel('Total potencial energy');
+ylabel('Potencial energy');
 title('Potencial Energy');
 
-figure(4);
+subplot(3,1,3)
 plot(t(1:length(t)), E_total, 'LineWidth', 2);
-xlabel('Time (s)');
-ylabel('Total energy (J)');
-title('Conservation double pendulum energy');
+xlabel('Time (s)');ylabel('Total energy (J)');
+title('Energy conservation');
 grid on;
 
-figure(5);
-plot(t_aprox(1:length(t_aprox)), E_total_aprox, 'LineWidth', 2);
-xlabel('Time (s)');
-ylabel('Total energy (J)');
-title('Conservation double pendulum energy aproximation');
-grid on;
 %%
 function dy = equations(t, theta, L1, L2, g, m1, m2)
     
