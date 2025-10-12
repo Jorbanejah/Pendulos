@@ -1,12 +1,12 @@
 clc;clear
-%% Introduction: double pendulum
+%% Introduction: double pendulum (approx)
 %Physics parametres
 L1 = 1; L2 = 0.5; m1 = 0.75; m2 = 0.5; g = 9.81;
 
 %Condition
 t_init = [0 10];
-initial_condition = [30 * pi / 180; 0; 0; 0];
-initial_condition_aprox = [30 * pi / 180; 0; 0; 0];
+initial_condition = [20 * pi / 180; 0; 0; 0];
+initial_condition_aprox = [20 * pi / 180; 0; 0; 0];
 
 opts = odeset('RelTol',1e-10,'AbsTol',1e-12);
 [t, z] = ode45(@(t, theta)equations(t, theta, L1, L2, g, m1, m2), t_init, initial_condition, odeset);
@@ -57,12 +57,12 @@ for j = 1:nFrames
     y1_aprox = y_aprox - L2 * cos(z_aprox(j,3));
 
     hold on
-
     % Plot exact pendulum
     plot([0 x], [0 y], 'k-', 'LineWidth', 2);
     plot([x x1], [y y1], 'k-', 'LineWidth', 2);
     plot(x, y, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
     plot(x1, y1, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
+   
 
 
     % Plot approximated pendulum (shifted right)
@@ -70,7 +70,6 @@ for j = 1:nFrames
     plot([x_aprox+4 x1_aprox+4], [y_aprox y1_aprox], 'k-', 'LineWidth', 2);
     plot(x_aprox+4, y_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
     plot(x1_aprox+4, y1_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
-    xlabel('Approximation')
 
     % Ground line
     plot([-2 7], [0 0], 'k', 'LineWidth', 2);
