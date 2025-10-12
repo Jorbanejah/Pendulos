@@ -12,19 +12,19 @@ E_total_average = zeros(length(angle),2);
 
 for i=1:length(angle)
     initial_condition_aprox = [angle(i) * pi / 180; 0; 0; 0];
-    [t_aprox, z_aprox] = ode45(@(t, theta)equations(t, theta, L1, L2, g, m1, m2), t_init, initial_condition_aprox, odeset);
+    [t, z] = ode45(@(t, theta)equations(t, theta, L1, L2, g, m1, m2), t_init, initial_condition_aprox, odeset);
     
-    Ek_aprox = zeros(length(t_aprox), 1);
-    Ep_aprox = zeros(length(t_aprox), 1);
-    E_total_aprox = zeros(length(t_aprox),1);
-    for j = 1:length(t_aprox)
-    Ek_aprox(j) = 0.5*(m1 + m2)*L1^2*z_aprox(j,2)^2 + 0.5*m2*L2^2*z_aprox(j,4)^2 + m2*L1*L2*z_aprox(j,2)*z_aprox(j,4)*cos(z_aprox(j,1)-z_aprox(j,3));
-    Ep_aprox(j) = -(m1 + m2)*g*L1*cos(z_aprox(j,1)) - m2*g*L2*cos(z_aprox(j,3));
-    E_total_aprox(j) = Ek_aprox(j) + Ep_aprox(j);
+    Ek = zeros(length(t), 1);
+    Ep = zeros(length(t), 1);
+    E_total= zeros(length(t),1);
+    for j = 1:length(t)
+    Ek(j) = 0.5*(m1 + m2)*L1^2*z(j,2)^2 + 0.5*m2*L2^2*z(j,4)^2 + m2*L1*L2*z(j,2)*z(j,4)*cos(z(j,1)-z(j,3));
+    Ep(j) = -(m1 + m2)*g*L1*cos(z(j,1)) - m2*g*L2*cos(z(j,3));
+    E_total(j) = Ek(j) + Ep(j);
     end
     
-    E_total_average(i,1) = max(E_total_aprox);
-    E_total_average(i,2) = min(E_total_aprox);
+    E_total_average(i,1) = max(E_total);
+    E_total_average(i,2) = min(E_total);
 end 
 
 figure(1)
