@@ -1,3 +1,4 @@
+clc;clear
 %Probar el ode45, ode15s, y el metodo de Verlet
 
 %Physics parametres
