@@ -5,8 +5,8 @@ L1 = 1; L2 = 0.5; m1 = 0.75; m2 = 0.5; g = 9.81;
 
 %Condition
 t_init = [0 10];
-initial_condition = [45 * pi / 180; 0; 0; 0];
-initial_condition_aprox = [45 * pi / 180; 0; 0; 0];
+initial_condition = [30 * pi / 180; 0; 0; 0];
+initial_condition_aprox = [30 * pi / 180; 0; 0; 0];
 
 opts = odeset('RelTol',1e-10,'AbsTol',1e-12);
 [t, z] = ode45(@(t, theta)equations(t, theta, L1, L2, g, m1, m2), t_init, initial_condition, odeset);
@@ -30,31 +30,31 @@ Ep_aprox = zeros(length(t_aprox),1);
 E_total_aprox = zeros(length(t_aprox),1);
 
 % Energy calculus
-for i = 1:length(t)
-    Ek(i) = 0.5*(m1 + m2)*L1^2*z(i,2)^2 + 0.5*m2*L2^2*z(i,4)^2 + m2*L1*L2*z(i,2)*z(i,4)*cos(z(i,1)-z(i,3));
-    Ep(i) = -(m1 + m2)*g*L1*cos(z(i,1)) - m2*g*L2*cos(z(i,3));
-    E_total(i) = Ek(i) + Ep(i);
+for j = 1:length(t)
+    Ek(j) = 0.5*(m1 + m2)*L1^2*z(j,2)^2 + 0.5*m2*L2^2*z(j,4)^2 + m2*L1*L2*z(j,2)*z(j,4)*cos(z(j,1)-z(j,3));
+    Ep(j) = -(m1 + m2)*g*L1*cos(z(j,1)) - m2*g*L2*cos(z(j,3));
+    E_total(j) = Ek(j) + Ep(j);
 end
 
-for i = 1:length(t_aprox)
-    Ek_aprox(i) = 0.5*(m1 + m2)*L1^2*z_aprox(i,2)^2 + 0.5*m2*L2^2*z_aprox(i,4)^2 + m2*L1*L2*z_aprox(i,2)*z_aprox(i,4)*cos(z_aprox(i,1)-z_aprox(i,3));
-    Ep_aprox(i) = -(m1 + m2)*g*L1*cos(z_aprox(i,1)) - m2*g*L2*cos(z_aprox(i,3));
-    E_total_aprox(i) = Ek_aprox(i) + Ep_aprox(i);
+for j = 1:length(t_aprox)
+    Ek_aprox(j) = 0.5*(m1 + m2)*L1^2*z_aprox(j,2)^2 + 0.5*m2*L2^2*z_aprox(j,4)^2 + m2*L1*L2*z_aprox(j,2)*z_aprox(j,4)*cos(z_aprox(j,1)-z_aprox(j,3));
+    Ep_aprox(j) = -(m1 + m2)*g*L1*cos(z_aprox(j,1)) - m2*g*L2*cos(z_aprox(j,3));
+    E_total_aprox(j) = Ek_aprox(j) + Ep_aprox(j);
 end
 
 %Animation
 figure(1);
-for i = 1:nFrames
+for j = 1:nFrames
     clf;
-    x = L1 * sin(z(i,1));
-    y = - L1 * cos(z(i,1));
-    x1 = x + L2 * sin(z(i,3));
-    y1 = y - L2 * cos(z(i,3));
+    x = L1 * sin(z(j,1));
+    y = - L1 * cos(z(j,1));
+    x1 = x + L2 * sin(z(j,3));
+    y1 = y - L2 * cos(z(j,3));
 
-    x_aprox = L1 * sin(z_aprox(i,1));
-    y_aprox = - L1 * cos(z_aprox(i,1));
-    x1_aprox = x_aprox + L2 * sin(z_aprox(i,3));
-    y1_aprox = y_aprox - L2 * cos(z_aprox(i,3));
+    x_aprox = L1 * sin(z_aprox(j,1));
+    y_aprox = - L1 * cos(z_aprox(j,1));
+    x1_aprox = x_aprox + L2 * sin(z_aprox(j,3));
+    y1_aprox = y_aprox - L2 * cos(z_aprox(j,3));
 
     hold on
 
@@ -64,11 +64,13 @@ for i = 1:nFrames
     plot(x, y, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
     plot(x1, y1, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
 
+
     % Plot approximated pendulum (shifted right)
     plot([4 4+x_aprox], [0 y_aprox], 'k-', 'LineWidth', 2);
     plot([x_aprox+4 x1_aprox+4], [y_aprox y1_aprox], 'k-', 'LineWidth', 2);
     plot(x_aprox+4, y_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
     plot(x1_aprox+4, y1_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
+    xlabel('Approximation')
 
     % Ground line
     plot([-2 7], [0 0], 'k', 'LineWidth', 2);
@@ -119,7 +121,7 @@ xlabel('Time (s)');ylabel('Total energy (J)');
 title('Energy conservation');
 grid on;
 
-%%
+%% Functions
 function dy = equations(t, theta, L1, L2, g, m1, m2)
     
     theta1 = theta(1);
@@ -146,7 +148,7 @@ function dy = equations(t, theta, L1, L2, g, m1, m2)
     dy(4) = dtheta2_sol;
 
 end
-%%
+
 function dy_aprox = equations_aprox(t, theta, L1, L2, g, m1, m2)
     
     theta1 = theta(1);
