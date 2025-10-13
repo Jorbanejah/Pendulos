@@ -29,12 +29,33 @@ $$
 \\ddot{\\theta} + \\frac{g}{l} \\sin\\theta = 0
 $$
 
-## 🧰 What This Folder Contains
+## 🎞️ Animation
 
-- `simple_pendulum.py`: Python script that numerically solves the pendulum equation using the Runge-Kutta method.
-- `energy_plot.png`: Visualizes total, kinetic, and potential energy over time.
-- `trajectory.gif`: Animation of the pendulum’s motion.
-- `README.md`: You’re reading it!
+To better visualize the pendulum dynamics, you can watch the following MP4 animations:
+
+- [Pendulum_simulation.mp4](Pendulum_simulation.mp4):  
+  A clean animation of the simple pendulum’s motion, showing angle evolution over time.
+
+- [Combination_simulation.mp4](Combination_simulation.mp4):  
+  A composite animation that compares different initial conditions or behaviors.
+
+> 💡 Tip: Click the links to download or view the videos in your browser.
+
+## 📦 Contents
+
+This folder includes the following files:
+
+| File                             | Description                                                                 |
+|----------------------------------|-----------------------------------------------------------------------------|
+| `simulacion_pendulo_simple.m`    | MATLAB script for simulating the simple pendulum                           |
+| `combinacion_pendulos.m`         | MATLAB script combining multiple pendulum behaviors                        |
+| `Description_analisis_pendulo_simple.m` | MATLAB file with descriptive analysis of the simple pendulum (ode45, implicit Euler and RK4)        |
+| `Pendulum_simulation.mp4`        | MP4 animation showing the pendulum’s motion                                |
+| `Combination_simulation.mp4`     | MP4 animation comparing different pendulum behaviors                       |
+
+
+> All simulations are self-contained. You can modify initial conditions and parameters directly in the scripts.
+
 
 ## 🌀 Alternative Uses of This Calculus
 
