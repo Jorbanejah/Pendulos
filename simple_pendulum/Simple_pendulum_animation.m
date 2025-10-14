@@ -21,9 +21,8 @@ theta2_intercept = interp1(t2, theta2(:,1), linspace(0, 5, nFrames));
 
 %Record simulation:
 
-v = VideoWriter('Simple_pendulum_animation.gif');
-v.FrameRate = 20; 
-open(v);
+filename = 'Simple_pendulum.gif';
+fig = figure(1);
 
 for i = 1:length(t)
     clf; %Wipe the current figure clean before drawing the next frame
@@ -83,10 +82,16 @@ for i = 1:length(t)
     box off;
     
     drawnow;
-    frame = getframe(gcf); % Capture current figure
-    writeVideo(v, frame);  % Write frame to video
+    frame = getframe(fig);
+    img = frame2im(frame);
+    [A,map] = rgb2ind(img,256);
+
+    if i == 1
+        imwrite(A,map,filename,'gif','LoopCount',Inf,'DelayTime',0.05);
+    else
+        imwrite(A,map,filename,'gif','WriteMode','append','DelayTime',0.05);
+    end
 end
-close(v)
 %First step is converted the second-order ODE into a first-order ODE
 %through this function:
 function dtheta = equation(t, theta)

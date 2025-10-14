@@ -5,10 +5,8 @@ t_init = [0 10];
 conditional = [0; 0; pi/4; 0]; %Initial position, inicial velocity, angular position, angular velocity.
 [t, z] = ode45(@(t, y) pendulum(t, y, g, l, m, M, k), t_init, conditional);
 
-v = VideoWriter('Combination_simulation.gif');
-v.FrameRate = 20; 
-open(v);
-
+filename = 'Pendulum_combination.gif';
+fig = figure;
 nFrames = length(t);
 for i = 1:nFrames
     clf;
@@ -49,10 +47,17 @@ for i = 1:nFrames
 
     hold off
     drawnow;
-    frame = getframe(gcf);
-    writeVideo(v, frame);
+    frame = getframe(fig);
+    img = frame2im(frame);
+    [A,map] = rgb2ind(img,256);
+
+    if i == 1
+        imwrite(A,map,filename,'gif','LoopCount',Inf,'DelayTime',0.05);
+    else
+        imwrite(A,map,filename,'gif','WriteMode','append','DelayTime',0.05);
+    end
 end
-close(v)
+
 function dy = pendulum(t, y, g, L, m, M, k)
 
     x = y(1);
