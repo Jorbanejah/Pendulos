@@ -21,7 +21,7 @@ theta2_intercept = interp1(t2, theta2(:,1), linspace(0, 5, nFrames));
 
 %Record simulation:
 
-v = VideoWriter('Pendulum_simulation.mp4', 'MPEG-4');
+v = VideoWriter('Simple_pendulum_animation.gif');
 v.FrameRate = 20; 
 open(v);
 

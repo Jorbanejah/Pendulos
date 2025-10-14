@@ -53,9 +53,9 @@ omega = sqrt(g/L);
 [t3, x3, v3] = RG4(0, x0, v0, h, N, omega);
 
 plot(t, x(:,1), 'r', t1, x1, 'b--', t2, x2, 'g-.', t3, x3, 'k:');
-legend('ODE45', 'Euler Implícito', 'Heun', 'Runge-Kutta 4');
-xlabel('Tiempo'); ylabel('Desplazamiento');
-title('Comparación de Métodos Numéricos');
+legend('ODE45', 'Implicit Euler', 'Heun', 'Runge-Kutta 4');
+xlabel('Time'); ylabel('Lenght');
+title('Comparison of numerical methods');
 
 %Método de Euler implícito: requiere resolver un sistema de ecuaciones en
 %cada paso en nuestro caso, la ecuación cambiará: dx/dt = v; dv/dt = -
