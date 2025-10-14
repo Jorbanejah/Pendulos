@@ -29,17 +29,31 @@ $$
 \\ddot{\\theta} + \\frac{g}{l} \\sin\\theta = 0
 $$
 
+How do we solve these nonlinear equations?
+Well, dusting off my numerical methods notebook, I came up with several approaches such as ode45, Heun's methods, Implicit Euler, RK4.
+
+![Comparison of Numerical Methods](Comparison_numerical.png)
+<img src="Comparison_numerical.png" alt="Comparison of Numerical Methods" width="600"/>
+
+
+
+as we can see with the Implicit Euler methods, it fails to preserve the oscillatory behavior, and the numerical tends to decay over time. But, why does it happen? Well, the Implict Euler methods is numericallly dissipative; meaning it causes the system's energy to decay with each time step - although it has not friction or physical damping. Therefore, at each step, the method solves a equation that "looks ahead" in time, which tends to smooth out the oscillatory behavior. This is an inherent feature of the methods. For this reason, implicit schemes like Euler are generally not used in conservative systems (where energy preservation is crucial).
 ## 🎞️ Animation
 
-To better visualize the pendulum dynamics, you can watch the following MP4 animations:
+To better visualize the pendulum dynamics, you can watch the following .gif animations:
 
-- [Pendulum_simulation.mp4](Pendulum_simulation.mp4):  
+![Pendulum.gif](Pendulum_gif)  
+
   A clean animation of the simple pendulum’s motion, showing angle evolution over time.
 
-- [Combination_simulation.mp4](Combination_simulation.mp4):  
+![Simple_pendulum.gif](Simple_pendulum.gif)  
+
   A composite animation that compares different initial conditions or behaviors.
 
-> 💡 Tip: Click the links to download or view the videos in your browser.
+![Comparison_numerical.png](Comparison_numerical.png)
+
+  This is just only one of the many combinations of simple harmonic oscillators (SHOs) that we can describe and aniamte. If you'd like to contribute or have other idea: feel free to reach out! 😉
+
 
 ## 📦 Contents
 
