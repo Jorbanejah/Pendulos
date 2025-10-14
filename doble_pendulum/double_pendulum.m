@@ -43,6 +43,7 @@ for j = 1:length(t_aprox)
 end
 
 %Animation
+filename = 'Double_pendulum_animation.gif';
 figure(1);
 for j = 1:nFrames
     clf;
@@ -76,6 +77,8 @@ for j = 1:nFrames
 
     axis equal; axis([-2, 7, -3, 1]);
     drawnow;
+
+    exportgraphics(figure(1), filename, 'Append', true);
 end
 %% Total Energy graphs
 
