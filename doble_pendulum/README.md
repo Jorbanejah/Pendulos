@@ -60,6 +60,41 @@ $$
 
 This simplification leads to a linear system that can be solved analytically or with basic numerical methods. While it loses accuracy for larger angles, it provides valuable insight into the system’s harmonic behavior and serves as a benchmark for testing numerical solutions.
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="Double_pendulum_animation.gif" alt="Full Simulation" width="300"/><br/>
+      <strong>Full Nonlinear Simulation</strong>
+    </td>
+    <td align="center">
+      <img src="double_pendulum_animation_approx.gif" alt="Approximate Simulation" width="300"/><br/>
+      <strong>Small-Angle Approximation</strong>
+    </td>
+  </tr>
+</table>
+
+Despite the fact that numerical methods like 'ode45', 'ode15s' or similar, and similar solvers generally works well, the behaviour of the double pendulum often appears erratic. It seems as though the systems reacts to invisible forces or impulses that disrupt its expected motion. So, what's really happening here? 
+The issue lies in numerical noise. The animation we observe is computed with ode45 solver, which - while powerful - introduces small numerical errors at each time step. These errors accumulate over time, especially in chaotic systems like the double pendulum, leading to noticeable deviations in the simulation. How can we address this?
+
+On the other hand, the small-angle approximation produces a more stable simulation.But this raises an inportant questions: how far can the initial angle go before the approximation breaks down?
+
+Interestingly, both questions can we be answered by analyzing a single quantity: total mechanical energy. Energy conservation becomes the useful-key diagnostic tool for evaluating both numerical fidelity and the validity of linear approximations.
+
+**These graphics evaluate the kinetic, potencial and total mechanical energy of the system**
+
+**System Approximation Analysis:**
+
+<div align = "center">
+  <img src = "Energy%20(approx).png" alt = "Energy Analysis approx" width = "500"/>
+</div>
+
+**Real System Analysis:**
+
+<div align="center">
+  <img src="Energy.png" alt="Energy Analysis" width="500"/>
+</div>
+
+
 ---
 
 ## 🔍 Energy Analysis
