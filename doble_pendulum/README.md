@@ -101,13 +101,26 @@ Interestingly, both questions can we be answered by analyzing a single quantity:
 
 To evaluate the validity of the small-angle approximation, we perform an energy analysis across varying initial angles. By comparing total mechanical energy over time, we determine the threshold angle beyond which the approximation fails to conserve energy accurately.
 
+<div align = "center">
+  <img src = "Average%20total%20energy%20(approx).png" alt = "small-angle approximation" width = "500"/>
+</div>  
+
 This analysis helps us:
 
 - Quantify the error introduced by linearization
 - Validate the performance of numerical solvers
 - Understand the transition from predictable to chaotic motion
 
----
+On the other hand, we also explored different numerical solvers such as ode45, ode15s and symplectic Verlet algorithm.
+
+<div align = "center">
+  <img src = "numerical_methods.png" alt = "Comparison of numerical methods" width = "500"/>
+</div>
+ 
+This graphics concludes the current phase of the double pendulum analysis. However, the repository is far from complete. I will continue to upload addicional files related to: 
+ - Energy-conserving formulations of the double pendulum.
+ - Lyapunov exponent analysis.
+ - Visualitations of the angular motion of $theta_1$ and $theta_2$.
 
 ---
 
