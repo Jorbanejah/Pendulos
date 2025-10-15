@@ -33,7 +33,6 @@ How do we solve these nonlinear equations?
 Well, dusting off my numerical methods notebook, I came up with several approaches such as ode45, Heun's methods, Implicit Euler, RK4.
 
 ![Comparison of Numerical Methods](Comparison_numerical.png)
-<img src="Comparison_numerical.png" alt="Comparison of Numerical Methods" width="600"/>
 
 
 
@@ -42,7 +41,7 @@ as we can see with the Implicit Euler methods, it fails to preserve the oscillat
 
 To better visualize the pendulum dynamics, you can watch the following .gif animations:
 
-![Pendulum.gif](Pendulum_gif)  
+![Pendulum.gif](Pendulum.gif)  
 
   A clean animation of the simple pendulum’s motion, showing angle evolution over time.
 
@@ -50,7 +49,7 @@ To better visualize the pendulum dynamics, you can watch the following .gif anim
 
   A composite animation that compares different initial conditions or behaviors.
 
-![Comparison_numerical.png](Comparison_numerical.png)
+![Pendulum_combination.gif](Pendulum_combination.gif)
 
   This is just only one of the many combinations of simple harmonic oscillators (SHOs) that we can describe and aniamte. If you'd like to contribute or have other idea: feel free to reach out! 😉
 
@@ -61,11 +60,9 @@ This folder includes the following files:
 
 | File                             | Description                                                                 |
 |----------------------------------|-----------------------------------------------------------------------------|
-| `simulacion_pendulo_simple.m`    | MATLAB script for simulating the simple pendulum                           |
-| `combinacion_pendulos.m`         | MATLAB script combining multiple pendulum behaviors                        |
-| `Description_analisis_pendulo_simple.m` | MATLAB file with descriptive analysis of the simple pendulum (ode45, implicit Euler and RK4)        |
-| `Pendulum_simulation.mp4`        | MP4 animation showing the pendulum’s motion                                |
-| `Combination_simulation.mp4`     | MP4 animation comparing different pendulum behaviors                       |
+| `Simple_pendulum_combination.m`    | MATLAB script for simulating the simple pendulum                           |
+| `Pendulum_combiantion.m`         | MATLAB script combining multiple pendulum behaviors                        |
+| `Numerical_methods.m` | MATLAB file with descriptive analysis of the simple pendulum (ode45, implicit Euler and RK4)        |
 
 
 > All simulations are self-contained. You can modify initial conditions and parameters directly in the scripts.
