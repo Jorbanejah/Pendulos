@@ -12,13 +12,7 @@ opts = odeset('RelTol',1e-10,'AbsTol',1e-12);
 [t, z] = ode45(@(t, theta)equations(t, theta, L1, L2, g, m1, m2), t_init, initial_condition, odeset);
 [t_aprox, z_aprox] = ode45(@(t, theta)equations_aprox(t, theta, L1, L2, g, m1, m2), t_init, initial_condition_aprox, odeset);
 
-%% Animation: with a little tricky
-
-if (length(t) >= length(t_aprox))
-    nFrames = length(t_aprox);
-else
-    nFrames = length(t);
-end
+%% Animation:
 
 % Energy vector
 Ek = zeros(length(t),1);
@@ -44,18 +38,14 @@ end
 
 %Animation
 filename = 'Double_pendulum_animation.gif';
-figure(1);
-for j = 1:nFrames
+fig = figure(1);
+for j = 1:length(t)
+
     clf;
     x = L1 * sin(z(j,1));
     y = - L1 * cos(z(j,1));
     x1 = x + L2 * sin(z(j,3));
     y1 = y - L2 * cos(z(j,3));
-
-    x_aprox = L1 * sin(z_aprox(j,1));
-    y_aprox = - L1 * cos(z_aprox(j,1));
-    x1_aprox = x_aprox + L2 * sin(z_aprox(j,3));
-    y1_aprox = y_aprox - L2 * cos(z_aprox(j,3));
 
     hold on
     % Plot exact pendulum
@@ -63,26 +53,61 @@ for j = 1:nFrames
     plot([x x1], [y y1], 'k-', 'LineWidth', 2);
     plot(x, y, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
     plot(x1, y1, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
-   
-
-
-    % Plot approximated pendulum (shifted right)
-    plot([4 4+x_aprox], [0 y_aprox], 'k-', 'LineWidth', 2);
-    plot([x_aprox+4 x1_aprox+4], [y_aprox y1_aprox], 'k-', 'LineWidth', 2);
-    plot(x_aprox+4, y_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
-    plot(x1_aprox+4, y1_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
 
     % Ground line
-    plot([-2 7], [0 0], 'k', 'LineWidth', 2);
+    plot([-2 3], [0 0], 'k', 'LineWidth', 2);
 
-    axis equal; axis([-2, 7, -3, 1]);
+    axis equal; axis([-2, 2, -3, 1]);
     drawnow;
 
-    exportgraphics(figure(1), filename, 'Append', true);
+    frame = getframe(fig);
+    img = frame2im(frame);
+    [A,map] = rgb2ind(img,256);
+
+    if j == 1
+        imwrite(A,map,filename,'gif','LoopCount',Inf,'DelayTime',0.05);
+    else
+        imwrite(A,map,filename,'gif','WriteMode','append','DelayTime',0.05);
+    end
 end
+
+filename1 = 'double_pendulum_animation_approx.gif';
+fig1 = figure(2);
+for j = 1:length(t_aprox)
+    
+    clf;
+    hold on
+    x_aprox = L1 * sin(z_aprox(j,1));
+    y_aprox = - L1 * cos(z_aprox(j,1));
+    x1_aprox = x_aprox + L2 * sin(z_aprox(j,3));
+    y1_aprox = y_aprox - L2 * cos(z_aprox(j,3));
+    
+    % Plot approximated pendulum
+    plot([0 x_aprox], [0 y_aprox], 'k-', 'LineWidth', 2);
+    plot([x_aprox x1_aprox], [y_aprox y1_aprox], 'k-', 'LineWidth', 2);
+    plot(x_aprox, y_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','r');
+    plot(x1_aprox, y1_aprox, 'ro', 'MarkerSize', 10, 'MarkerFaceColor','g');
+
+     % Ground line
+    plot([-2 3], [0 0], 'k', 'LineWidth', 2);
+    % 
+    axis equal; axis([-2, 2, -3, 1]);
+    drawnow;
+
+    frame1 = getframe(fig1);
+    img1 = frame2im(frame1);
+    [A1,map1] = rgb2ind(img1,256);
+    
+    if j == 1
+        imwrite(A1,map1,filename1,'gif','LoopCount',Inf,'DelayTime',0.05);
+    else
+        imwrite(A1,map1,filename1,'gif','WriteMode','append','DelayTime',0.05);
+    end
+end
+
 %% Total Energy graphs
 
-figure(2);
+figure(3);
 
 subplot(3,1,1);
 plot(t_aprox, Ek_aprox, 'LineWidth', 2);
@@ -103,7 +128,7 @@ ylabel('Total energy (J)');
 title('Energy Conservation (Approximation)');
 grid on;
 
-figure(3);
+figure(4);
 
 subplot(3,1,1)
 plot(t, Ek, 'LineWidth', 2)
