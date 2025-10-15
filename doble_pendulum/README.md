@@ -120,7 +120,7 @@ On the other hand, we also explored different numerical solvers such as ode45, o
 This graphics concludes the current phase of the double pendulum analysis. However, the repository is far from complete. I will continue to upload addicional files related to: 
  - Energy-conserving formulations of the double pendulum.
  - Lyapunov exponent analysis.
- - Visualitations of the angular motion of $theta_1$ and $theta_2$.
+ - Visualitations of the angular motion of $\theta_1$ and $\theta_2$.
 
 ---
 
